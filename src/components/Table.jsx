@@ -30,7 +30,7 @@ const Table = ({ data, handleSort }) => {
       </thead>
       <tbody>
         {data?.map((el) => (
-          <PaitentInfo data={el} tableColumns={tableColumns} />
+          <PaitentInfo key={el.personID} data={el} tableColumns={tableColumns} />
         ))}
       </tbody>
     </table>

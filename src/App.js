@@ -57,7 +57,7 @@ function App() {
 
       setGraphList([
         {
-          rece: raceList?.data?.raceList,
+          race: raceList?.data?.raceList,
         },
         { ethnicity: EthnicityList?.data?.ethnicityList },
         { gender: GenderList?.data?.genderList },

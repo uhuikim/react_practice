@@ -27,7 +27,7 @@ const Pagination = ({ totalPageCount, pageRangeDisplayed = 5, handlePageClick, c
         </button>
       </li>
       {pages.map((page) => (
-        <li className="pageNumberStyle">
+        <li className="pageNumberStyle" key={page}>
           <button
             className="buttonStyle"
             className={c('buttonStyle', { active: page === currentPage })}

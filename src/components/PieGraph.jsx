@@ -9,15 +9,10 @@ const PieGraph = ({ data, title }) => {
     const height = 500;
     const margin = 50;
 
-    const radius = Math.min(width, height) / 2.3 - margin;
+    const radius = Math.min(width, height) / 2 - margin;
     const pieData = d3.pie().value((d) => d.count)(data);
 
     const arc = d3.arc().innerRadius(0).outerRadius(radius);
-
-    const arcLabel = (() => {
-      const radius = (Math.min(width, height) / 2) * 0.77;
-      return d3.arc().innerRadius(radius).outerRadius(radius);
-    })();
 
     var colors = d3.scaleOrdinal().domain(pieData).range(d3.schemeSet2);
 
@@ -40,14 +35,14 @@ const PieGraph = ({ data, title }) => {
       .text(function (d) {
         return `${d.data.item} : ${d.data.count}`;
       })
-      .attr('transform', (d) => `translate(${arcLabel.centroid(d)})`)
+      .attr('transform', (d) => `translate(${arc.centroid(d)})`)
       .style('text-anchor', 'middle')
       .style('font-weight', 'bold')
-      .style('font-size', 14);
+      .style('font-size', 17);
   }, []);
 
   return (
-    <div>
+    <div className="chartBox">
       <h2> {title} </h2>
       <div id="chart">
         <svg ref={pieChart} />

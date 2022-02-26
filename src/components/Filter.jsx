@@ -10,7 +10,7 @@ const Filter = ({ handleFilter, handleMinMaxFilter, handleResetButton, graphList
       {graphList?.map((el) => {
         const title = Object.keys(el);
         return (
-          <div className="FilterBox">
+          <div className="FilterBox" key={title}>
             <p className="FilterTitle">{title[0]}</p>
             <div className="Filter">
               <FilterDropDown title={title[0]} dropMenu={el[title]} handleDropDown={handleFilter} filter={filter} />
