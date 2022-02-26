@@ -12,7 +12,7 @@ const Graph = ({ data, graphList }) => {
         if (cur[name] === item) return acc + cur.count;
         return acc;
       }, 0);
-      returnList.push({ item, count: sumCount });
+      sumCount && returnList.push({ item, count: sumCount });
     });
 
     return returnList;
@@ -34,10 +34,11 @@ const Graph = ({ data, graphList }) => {
           return acc;
         }, 0);
 
-        conditionsList.push({ item: first + '+' + second, count: counts });
+        counts && conditionsList.push({ item: first + '+' + second, count: counts });
       });
     });
 
+    console.log(conditionsList);
     return conditionsList;
   };
 
@@ -82,15 +83,20 @@ const Graph = ({ data, graphList }) => {
   useEffect(() => {
     const genderEthnicityList = handleTwoCondition('gender', 'ethnicity');
     const genderRaceList = handleTwoCondition('gender', 'race');
-    setTwoConGraph((prev) => [
-      ...prev,
-      {
-        '(성별 + 민족)별 환자 수': genderEthnicityList,
-      },
-      {
-        '(성별 + 인종)별 환자 수': genderRaceList,
-      },
-    ]);
+    genderEthnicityList.length &&
+      setTwoConGraph((prev) => [
+        ...prev,
+        {
+          '(성별 + 민족)별 환자 수': genderEthnicityList,
+        },
+      ]);
+    genderRaceList.length &&
+      setTwoConGraph((prev) => [
+        ...prev,
+        {
+          '(성별 + 인종)별 환자 수': genderRaceList,
+        },
+      ]);
   }, [graphList]);
 
   // 새로고침시 초기화
