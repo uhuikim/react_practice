@@ -3,7 +3,43 @@ import PieGraph from './PieGraph';
 
 const Graph = ({ data, graphList }) => {
   const [graph, setGraph] = useState([]);
-  console.log(graphList);
+  const [twoConGraph, setTwoConGraph] = useState([]);
+
+  const handleOneCondition = (name, value) => {
+    const returnList = [];
+    value.map((item) => {
+      const sumCount = data.reduce((acc, cur) => {
+        if (cur[name] === item) return acc + cur.count;
+        return acc;
+      }, 0);
+      returnList.push({ item, count: sumCount });
+    });
+
+    return returnList;
+  };
+
+  const handleTwoCondition = (firstName, secondName) => {
+    const conditionsList = [];
+    const conditions = graphList
+      .filter((item) => {
+        const key = Object.keys(item);
+        return key.includes(firstName) || key.includes(secondName);
+      })
+      .map((el) => Object.values(el)[0]);
+
+    conditions[0]?.forEach((first) => {
+      conditions[1].forEach((second) => {
+        const counts = data.reduce((acc, cur) => {
+          if (cur[firstName] === second && cur[secondName] === first) return acc + cur.count;
+          return acc;
+        }, 0);
+
+        conditionsList.push({ item: first + '+' + second, count: counts });
+      });
+    });
+
+    return conditionsList;
+  };
 
   // 한가지
   useEffect(() => {
@@ -12,14 +48,7 @@ const Graph = ({ data, graphList }) => {
       const value = Object.values(list)[0];
 
       if (key === 'race') {
-        const raceList = [];
-        value.map((item) => {
-          const raceCount = data.reduce((acc, cur) => {
-            if (cur.race === item) return acc + cur.count;
-            return acc;
-          }, 0);
-          raceList.push({ item, count: raceCount });
-        });
+        const raceList = handleOneCondition('race', value);
         setGraph((prev) => [
           ...prev,
           {
@@ -27,16 +56,9 @@ const Graph = ({ data, graphList }) => {
           },
         ]);
       }
-      if (key === 'ethnicity') {
-        const ethnicityList = [];
-        value.map((item) => {
-          const ethnicityCount = data.reduce((acc, cur) => {
-            if (cur.ethnicity === item) return acc + cur.count;
-            return acc;
-          }, 0);
-          ethnicityList.push({ item, count: ethnicityCount });
-        });
 
+      if (key === 'ethnicity') {
+        const ethnicityList = handleOneCondition('ethnicity', value);
         setGraph((prev) => [
           ...prev,
           {
@@ -45,15 +67,7 @@ const Graph = ({ data, graphList }) => {
         ]);
       }
       if (key === 'gender') {
-        const genderList = [];
-        value.map((item) => {
-          const genderCount = data.reduce((acc, cur) => {
-            if (cur.gender === item) return acc + cur.count;
-            return acc;
-          }, 0);
-          genderList.push({ item, count: genderCount });
-        });
-
+        const genderList = handleOneCondition('gender', value);
         setGraph((prev) => [
           ...prev,
           {
@@ -62,56 +76,17 @@ const Graph = ({ data, graphList }) => {
         ]);
       }
     });
-  }, [data, graphList]);
+  }, [graphList]);
 
   // 두가지 조합
   useEffect(() => {
-    const genderEthnicity = graphList
-      .filter((a) => {
-        const key = Object.keys(a);
-        return key.includes('gender') || key.includes('ethnicity');
-      })
-      .map((el) => Object.values(el)[0]);
-
-    const genderRace = graphList
-      .filter((a) => {
-        const key = Object.keys(a);
-        return key.includes('gender') || key.includes('race');
-      })
-      .map((el) => Object.values(el)[0]);
-
-    const genderEthnicityList = [];
-    genderEthnicity[0]?.forEach((eth) => {
-      genderEthnicity[1].forEach((gen) => {
-        const counts = data.reduce((acc, cur) => {
-          if (cur.gender === gen && cur.ethnicity === eth) return acc + cur.count;
-          return acc;
-        }, 0);
-
-        genderEthnicityList.push({ item: eth + '+' + gen, count: counts });
-      });
-    });
-    setGraph((prev) => [
+    const genderEthnicityList = handleTwoCondition('gender', 'ethnicity');
+    const genderRaceList = handleTwoCondition('gender', 'race');
+    setTwoConGraph((prev) => [
       ...prev,
       {
         '(성별 + 민족)별 환자 수': genderEthnicityList,
       },
-    ]);
-
-    const genderRaceList = [];
-    genderRace[0]?.forEach((race) => {
-      genderRace[1].forEach((gen) => {
-        const counts = data.reduce((acc, cur) => {
-          if (cur.gender === gen && cur.race === race) return acc + cur.count;
-          return acc;
-        }, 0);
-
-        genderRaceList.push({ item: race + '+' + gen, count: counts });
-      });
-    });
-
-    setGraph((prev) => [
-      ...prev,
       {
         '(성별 + 인종)별 환자 수': genderRaceList,
       },
@@ -121,14 +96,21 @@ const Graph = ({ data, graphList }) => {
   // 새로고침시 초기화
   useEffect(() => {
     setGraph([]);
+    setTwoConGraph([]);
   }, []);
 
-  console.log(graph);
-
-  return graph.map((el, index) => {
-    const title = Object.keys(el)[0];
-    return <PieGraph key={title + index} data={el[title]} title={title} />;
-  });
+  return (
+    <>
+      {graph.map((el, index) => {
+        const title = Object.keys(el)[0];
+        return <PieGraph key={title + index} data={el[title]} title={title} />;
+      })}
+      {twoConGraph.map((el, index) => {
+        const title = Object.keys(el)[0];
+        return <PieGraph key={title + index} data={el[title]} title={title} />;
+      })}
+    </>
+  );
 };
 
 export default Graph;
