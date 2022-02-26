@@ -18,6 +18,7 @@ function App() {
   });
 
   const [graphList, setGraphList] = useState([]);
+  const [filterGraphList, setFilterGraphList] = useState([]);
 
   const [filter, setFilter] = useState({
     race: null,
@@ -62,6 +63,14 @@ function App() {
         { ethnicity: EthnicityList?.data?.ethnicityList },
         { gender: GenderList?.data?.genderList },
         { death: ['true', 'false'] },
+      ]);
+
+      setFilterGraphList([
+        {
+          race: raceList?.data?.raceList,
+        },
+        { ethnicity: EthnicityList?.data?.ethnicityList },
+        { gender: GenderList?.data?.genderList },
       ]);
     } catch (err) {
       console.log(err);
@@ -147,15 +156,37 @@ function App() {
   }, [currentPage, inputRow, sort, filter, ageFilter]);
 
   useEffect(() => {
-    getGraphDatas();
     getGraphList();
   }, []);
+
+  useEffect(() => {
+    getGraphDatas();
+  }, [filterGraphList]);
+
+  useEffect(() => {
+    if (filter.race) {
+      const left = filterGraphList.filter((el) => !Object.keys(el).includes('race'));
+      left.push({ race: [filter.race] });
+      setFilterGraphList(left);
+    }
+    if (filter.gender) {
+      const left = filterGraphList.filter((el) => !Object.keys(el).includes('gender'));
+      left.push({ gender: [filter.gender] });
+      setFilterGraphList(left);
+    }
+    if (filter.ethnicity) {
+      const left = filterGraphList.filter((el) => !Object.keys(el).includes('ethnicity'));
+      left.push({ ethnicity: [filter.ethnicity] });
+      setFilterGraphList(left);
+    }
+  }, [filter]);
 
   return (
     <div className="app">
       <div className="content">
         <h1>환자 정보</h1>
-        <Graph data={graphData} graphList={graphList} />
+
+        <Graph data={graphData} graphList={filterGraphList} />
         <Filter
           handleFilter={handleFilter}
           handleMinMaxFilter={handleMinMaxFilter}

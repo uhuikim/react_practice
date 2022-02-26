@@ -3,6 +3,7 @@ import PieGraph from './PieGraph';
 
 const Graph = ({ data, graphList }) => {
   const [graph, setGraph] = useState([]);
+  console.log(graphList);
 
   // 한가지
   useEffect(() => {
@@ -122,9 +123,11 @@ const Graph = ({ data, graphList }) => {
     setGraph([]);
   }, []);
 
-  return graph.map((el) => {
+  console.log(graph);
+
+  return graph.map((el, index) => {
     const title = Object.keys(el)[0];
-    return <PieGraph key={title} data={el[title]} title={title} />;
+    return <PieGraph key={title + index} data={el[title]} title={title} />;
   });
 };
 

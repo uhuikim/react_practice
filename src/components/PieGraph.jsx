@@ -5,40 +5,37 @@ const PieGraph = ({ data, title }) => {
   const pieChart = useRef();
 
   useEffect(() => {
-    const width = 500;
-    const height = 500;
-    const margin = 50;
-
-    const radius = Math.min(width, height) / 2 - margin;
     const pieData = d3.pie().value((d) => d.count)(data);
 
-    const arc = d3.arc().innerRadius(0).outerRadius(radius);
-
+    const arc = d3.arc().innerRadius(0).outerRadius(200);
     var colors = d3.scaleOrdinal().domain(pieData).range(d3.schemeSet2);
 
-    const svg = d3.select(pieChart.current).attr('width', width).attr('height', height);
+    const svg = d3
+      .select(pieChart.current)
+      .attr('width', 500)
+      .attr('height', 500)
+      .append('g')
+      .attr('transform', 'translate(250,250)');
 
-    const g = svg.append('g').attr('transform', `translate(${width / 2}, ${height / 2})`);
+    const tooldiv = d3.select('#chart').append('div').style('visibility', 'hidden').style('position', 'absolute');
 
-    g.selectAll('path')
+    svg
+      .append('g')
+      .selectAll('path')
       .data(pieData)
-      .enter()
-      .append('path')
+      .join('path')
+      .attr('d', arc)
       .attr('fill', (d, i) => colors(i))
       .attr('stroke', 'white')
-      .attr('d', arc);
-
-    g.selectAll('text')
-      .data(pieData)
-      .enter()
-      .append('text')
-      .text(function (d) {
-        return `${d.data.item} : ${d.data.count}`;
+      .on('mouseover', (i, d) => {
+        tooldiv.style('visibility', 'visible').text(`${d.data.item} ${d.data.count}`);
       })
-      .attr('transform', (d) => `translate(${arc.centroid(d)})`)
-      .style('text-anchor', 'middle')
-      .style('font-weight', 'bold')
-      .style('font-size', 17);
+      .on('mousemove', (e) => {
+        tooldiv.style('top', e.pageY - 50 + 'px').style('left', e.pageX - 50 + 'px');
+      })
+      .on('mouseout', () => {
+        tooldiv.style('visibility', 'hidden');
+      });
   }, []);
 
   return (
