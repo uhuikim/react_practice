@@ -2,7 +2,9 @@ import React, { useMemo } from 'react';
 import { clamp, range } from 'lodash';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 import { AiOutlineDoubleLeft, AiOutlineDoubleRight } from 'react-icons/ai';
+import c from 'classnames';
 
+import '../styles/components/Pagination.scss';
 const Pagination = ({ totalPageCount, pageRangeDisplayed = 5, handlePageClick, currentPage }) => {
   const pages = useMemo(() => {
     const halfPageToShow = Math.floor(pageRangeDisplayed / 2);
@@ -26,7 +28,12 @@ const Pagination = ({ totalPageCount, pageRangeDisplayed = 5, handlePageClick, c
       </li>
       {pages.map((page) => (
         <li className="pageNumberStyle">
-          <button className="buttonStyle" onClick={handlePageClick(page)} type="button">
+          <button
+            className="buttonStyle"
+            className={c('buttonStyle', { active: page === currentPage })}
+            onClick={handlePageClick(page)}
+            type="button"
+          >
             {page}
           </button>
         </li>

@@ -4,12 +4,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-top: 2rem;
 }
 
 .arrowIconStyle {
   width: 33px;
   padding: 7px 0;
-  color: $gray0;
+  color: $gray2;
   transform: scale(0.8);
 }
 
@@ -21,11 +22,13 @@
 .buttonStyle {
   min-width: 33px;
   padding: 8px 14px;
-  // ${active && `background-color: ${palette.primary600}`};
-  // color: ${active ? palette.white : palette.black200};
 
-  // &:hover {
-  //   background: ${!active && palette.primary100};
-  //   color: ${!active && palette.blue};
-  // }
+  &:hover {
+    background: $gray0;
+  }
+}
+
+.active {
+  background: $main0;
+  color: $light0;
 }
