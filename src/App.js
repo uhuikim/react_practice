@@ -120,6 +120,8 @@ function App() {
       min: null,
       max: null,
     });
+
+    setFilterGraphList(graphList);
   };
 
   const handleSort = useCallback(
