@@ -3,55 +3,8 @@ import PieGraph from './PieGraph';
 
 const Graph = ({ data, graphList }) => {
   const [graph, setGraph] = useState([]);
-  // const test = [
-  //   {
-  //     '성별 환자 수': [
-  //       { item: 'Female', count: 500 },
-  //       { item: 'Male', count: 400 },
-  //     ],
-  //   },
 
-  //   {
-  //     '인종별 환자 수': [
-  //       { item: 'native', count: 598 },
-  //       { item: 'asian', count: 598 },
-  //       { item: 'white', count: 598 },
-  //       { item: 'black', count: 598 },
-  //       { item: 'other', count: 598 },
-  //     ],
-  //   },
-  //   {
-  //     '민족별 환자 수': [
-  //       { item: 'nonhispanic', count: 598 },
-  //       { item: 'hispanic', count: 598 },
-  //     ],
-  //   },
-  //   {
-  //     '(성별 + 인종)별 환자 수': [
-  //       { item: 'nonhispanic + F', count: 598 },
-  //       { item: 'nonhispanic + M', count: 598 },
-  //       { item: 'hispanic + F', count: 598 },
-  //       { item: 'hispanic + M', count: 598 },
-  //     ],
-  //   },
-
-  //   {
-  //     '(성별 + 민족)별 환자 수': [
-  //       { item: 'nonhispanic+F', count: 598 },
-  //       { item: 'native+F', count: 598 },
-  //       { item: 'asian+F', count: 598 },
-  //       { item: 'white+F', count: 598 },
-  //       { item: 'black+F', count: 598 },
-  //       { item: 'other+F', count: 598 },
-  //       { item: 'native+M', count: 598 },
-  //       { item: 'asian+M', count: 598 },
-  //       { item: 'white+M', count: 598 },
-  //       { item: 'black+M', count: 598 },
-  //       { item: 'other+M', count: 598 },
-  //     ],
-  //   },
-  // ];
-
+  // 한가지
   useEffect(() => {
     graphList.map((list) => {
       const key = Object.keys(list)[0];
@@ -110,8 +63,61 @@ const Graph = ({ data, graphList }) => {
     });
   }, [data, graphList]);
 
-  console.log(graph);
+  // 두가지 조합
+  useEffect(() => {
+    const genderEthnicity = graphList
+      .filter((a) => {
+        const key = Object.keys(a);
+        return key.includes('gender') || key.includes('ethnicity');
+      })
+      .map((el) => Object.values(el)[0]);
 
+    const genderRace = graphList
+      .filter((a) => {
+        const key = Object.keys(a);
+        return key.includes('gender') || key.includes('race');
+      })
+      .map((el) => Object.values(el)[0]);
+
+    const genderEthnicityList = [];
+    genderEthnicity[0]?.forEach((eth) => {
+      genderEthnicity[1].forEach((gen) => {
+        const counts = data.reduce((acc, cur) => {
+          if (cur.gender === gen && cur.ethnicity === eth) return acc + cur.count;
+          return acc;
+        }, 0);
+
+        genderEthnicityList.push({ item: eth + '+' + gen, count: counts });
+      });
+    });
+    setGraph((prev) => [
+      ...prev,
+      {
+        '(성별 + 민족)별 환자 수': genderEthnicityList,
+      },
+    ]);
+
+    const genderRaceList = [];
+    genderRace[0]?.forEach((race) => {
+      genderRace[1].forEach((gen) => {
+        const counts = data.reduce((acc, cur) => {
+          if (cur.gender === gen && cur.race === race) return acc + cur.count;
+          return acc;
+        }, 0);
+
+        genderRaceList.push({ item: race + '+' + gen, count: counts });
+      });
+    });
+
+    setGraph((prev) => [
+      ...prev,
+      {
+        '(성별 + 인종)별 환자 수': genderRaceList,
+      },
+    ]);
+  }, [graphList]);
+
+  // 새로고침시 초기화
   useEffect(() => {
     setGraph([]);
   }, []);
