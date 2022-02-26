@@ -38,12 +38,12 @@ const Graph = ({ data, graphList }) => {
       });
     });
 
-    console.log(conditionsList);
     return conditionsList;
   };
 
   // 한가지
   useEffect(() => {
+    setGraph([]);
     graphList.map((list) => {
       const key = Object.keys(list)[0];
       const value = Object.values(list)[0];
@@ -81,6 +81,7 @@ const Graph = ({ data, graphList }) => {
 
   // 두가지 조합
   useEffect(() => {
+    setTwoConGraph([]);
     const genderEthnicityList = handleTwoCondition('gender', 'ethnicity');
     const genderRaceList = handleTwoCondition('gender', 'race');
     genderEthnicityList.length &&
@@ -98,12 +99,6 @@ const Graph = ({ data, graphList }) => {
         },
       ]);
   }, [graphList]);
-
-  // 새로고침시 초기화
-  useEffect(() => {
-    setGraph([]);
-    setTwoConGraph([]);
-  }, []);
 
   return (
     <>

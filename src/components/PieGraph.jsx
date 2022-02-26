@@ -36,7 +36,7 @@ const PieGraph = ({ data, title }) => {
       .on('mouseout', () => {
         tooldiv.style('visibility', 'hidden');
       });
-  }, []);
+  }, [data]);
 
   return (
     <div className="chartBox">
