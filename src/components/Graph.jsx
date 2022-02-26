@@ -38,17 +38,17 @@ const Graph = ({ data, graphList }) => {
 
     {
       '(성별 + 민족)별 환자 수': [
-        { item: 'nonhispanic+ F', count: 598 },
-        { item: 'native+ F', count: 598 },
-        { item: 'asian+ F', count: 598 },
-        { item: 'white+ F', count: 598 },
-        { item: 'black+ F', count: 598 },
-        { item: 'other+ F', count: 598 },
-        { item: 'native+ M', count: 598 },
-        { item: 'asian+ M', count: 598 },
-        { item: 'white+ M', count: 598 },
-        { item: 'black+ M', count: 598 },
-        { item: 'other+ M', count: 598 },
+        { item: 'nonhispanic+F', count: 598 },
+        { item: 'native+F', count: 598 },
+        { item: 'asian+F', count: 598 },
+        { item: 'white+F', count: 598 },
+        { item: 'black+F', count: 598 },
+        { item: 'other+F', count: 598 },
+        { item: 'native+M', count: 598 },
+        { item: 'asian+M', count: 598 },
+        { item: 'white+M', count: 598 },
+        { item: 'black+M', count: 598 },
+        { item: 'other+M', count: 598 },
       ],
     },
   ];

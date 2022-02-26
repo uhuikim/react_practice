@@ -5,52 +5,54 @@ const PieGraph = ({ data, title }) => {
   const pieChart = useRef();
 
   useEffect(() => {
+    const width = 500;
+    const height = 500;
+    const margin = 50;
+
+    const radius = Math.min(width, height) / 2.3 - margin;
     const pieData = d3.pie().value((d) => d.count)(data);
 
-    const arc = d3.arc().innerRadius(0).outerRadius(200);
-    const colors = d3.scaleOrdinal(['#ffa822', '#134e6f', '#ff6150', '#1ac0c6', '#dee0e6']);
+    const arc = d3.arc().innerRadius(0).outerRadius(radius);
 
-    const svg = d3
-      .select(pieChart.current)
-      .attr('width', 600)
-      .attr('height', 600)
-      .style('background-color', 'yellow')
-      .append('g')
-      .attr('transform', 'translate(300,300)');
+    const arcLabel = (() => {
+      const radius = (Math.min(width, height) / 2) * 0.77;
+      return d3.arc().innerRadius(radius).outerRadius(radius);
+    })();
 
-    const tooldiv = d3
-      .select('#chart')
-      .append('div')
-      .style('visibility', 'hidden')
-      .style('position', 'absolute')
-      .style('background-color', 'red');
+    var colors = d3.scaleOrdinal().domain(pieData).range(d3.schemeSet2);
 
-    svg
-      .append('g')
-      .selectAll('path')
+    const svg = d3.select(pieChart.current).attr('width', width).attr('height', height);
+
+    const g = svg.append('g').attr('transform', `translate(${width / 2}, ${height / 2})`);
+
+    g.selectAll('path')
       .data(pieData)
-      .join('path')
-      .attr('d', arc)
+      .enter()
+      .append('path')
       .attr('fill', (d, i) => colors(i))
       .attr('stroke', 'white')
-      .on('mouseover', (i, d) => {
-        tooldiv.style('visibility', 'visible').text(`${d.data.item} ${d.data.count}`);
+      .attr('d', arc);
+
+    g.selectAll('text')
+      .data(pieData)
+      .enter()
+      .append('text')
+      .text(function (d) {
+        return `${d.data.item} : ${d.data.count}`;
       })
-      .on('mousemove', (e) => {
-        tooldiv.style('top', e.pageY - 50 + 'px').style('left', e.pageX - 50 + 'px');
-      })
-      .on('mouseout', () => {
-        tooldiv.style('visibility', 'hidden');
-      });
+      .attr('transform', (d) => `translate(${arcLabel.centroid(d)})`)
+      .style('text-anchor', 'middle')
+      .style('font-weight', 'bold')
+      .style('font-size', 14);
   }, []);
 
   return (
-    <>
+    <div>
       <h2> {title} </h2>
       <div id="chart">
         <svg ref={pieChart} />
       </div>
-    </>
+    </div>
   );
 };
 
