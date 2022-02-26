@@ -89,7 +89,6 @@ function App() {
 
   const handleMinMaxFilter = useCallback(
     (title) => (el) => {
-      console.log(title, el);
       setAgeFilter((prev) => ({ ...prev, [title]: el.target.value }));
     },
     [],
