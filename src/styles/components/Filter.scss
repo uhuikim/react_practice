@@ -1,0 +1,113 @@
+@import '../base/variables.scss';
+
+.FilterWrap {
+  background: white;
+  padding: 2rem;
+  border: 1px solid #bbb;
+  min-height: 100px;
+  min-width: 1000px;
+}
+
+.FilterBox {
+  display: flex;
+  border: 1px solid #c5c5c5;
+  margin-bottom: -1px;
+  min-width: 900px;
+}
+
+.FilterTitle {
+  width: 220px;
+  color: #5d5d5d;
+  background: #d4d4d4;
+  text-align: center;
+  font-weight: bold;
+  padding: 0.8rem;
+  flex-shrink: 0;
+}
+
+.Filter {
+  display: flex;
+  padding: 0.8rem;
+  flex-shrink: 0;
+  min-width: 600px;
+}
+
+.Input {
+  padding: 0.35rem 1rem;
+  width: 100%;
+  &::placeholder {
+    font-size: 1.1rem;
+  }
+}
+
+.ButtonGroup {
+  display: flex;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+
+.SearchButton {
+  padding: 1rem 2rem;
+  background: red;
+  color: white;
+  display: block;
+
+  &:hover {
+    background: #40a7c4;
+  }
+}
+
+.ResetButton {
+  @extend .SearchButton;
+  margin-left: 1rem;
+}
+
+.DropWrap {
+  position: relative;
+}
+
+.DropText {
+  display: flex;
+  align-items: center;
+  position: relative;
+  width: 16rem;
+
+  color: $gray2;
+  > svg {
+    transform: scale(0.5);
+    position: absolute;
+    right: 0.5rem;
+  }
+  border: 1px solid $gray0;
+  padding: 0.6rem 1.5rem;
+  background: white;
+  height: 2.8rem;
+  margin-right: 2rem;
+}
+
+.DropMenu {
+  position: absolute;
+  top: -2px;
+  min-width: 17rem;
+  background: white;
+  border: 1px solid $gray0;
+  border-radius: 4px;
+  box-shadow: 2px 2px 3px 1px rgba(211, 211, 211, 0.1);
+  display: none;
+  z-index: 1;
+}
+
+.show {
+  display: block;
+}
+.DropList {
+  width: 100%;
+  cursor: pointer;
+  :hover {
+    background: $light0;
+  }
+  height: 3.2rem;
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+}

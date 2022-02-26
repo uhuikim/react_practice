@@ -1,20 +1,31 @@
 import React from 'react';
 
-import '../styles/components/Table.scss';
 import PaitentInfo from './PaitentInfo';
+import { FaSort } from 'react-icons/fa';
 
-const Table = ({ data }) => {
+import '../styles/components/Table.scss';
+
+const Table = ({ data, handleSort }) => {
   const tableColumns = ['age', 'birthDatetime', 'ethnicity', 'gender', 'isDeath', 'personID', 'race'];
 
   return (
     <table className="contentTable">
       <thead>
         <tr>
-          {tableColumns?.map((el) => (
-            <th className="titleTh" key={el}>
-              {el}
-            </th>
-          ))}
+          {tableColumns?.map((el) =>
+            el !== 'age' ? (
+              <th className="titleTh" key={el}>
+                <button type="button" onClick={handleSort(el)}>
+                  {el}
+                </button>
+                <FaSort />
+              </th>
+            ) : (
+              <th className="titleTh" key={el}>
+                {el}
+              </th>
+            ),
+          )}
         </tr>
       </thead>
       <tbody>
