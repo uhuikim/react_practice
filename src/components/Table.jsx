@@ -17,8 +17,8 @@ const Table = ({ data, handleSort }) => {
               <th className="titleTh" key={el}>
                 <button type="button" onClick={handleSort(el)}>
                   {el}
+                  <FaSort />
                 </button>
-                <FaSort />
               </th>
             ) : (
               <th className="titleTh" key={el}>
@@ -29,25 +29,6 @@ const Table = ({ data, handleSort }) => {
         </tr>
       </thead>
       <tbody>
-        {/* {data?.map((el) => {
-          const Rows = tableColumns.map((column, index) =>
-            column === 'isDeath' ? (
-              <td key={column + index} className="listTd">
-                {el[column] ? 'true' : 'false'}
-              </td>
-            ) : (
-              <td key={column + index} className="listTd">
-                {el[column]}
-              </td>
-            ),
-          );
-          return (
-            <tr className="listTr" onClick={handleTableRow(el.personID)}>
-              {Rows}
-            </tr>
-          );
-        })} */}
-
         {data?.map((el) => (
           <PaitentInfo data={el} tableColumns={tableColumns} />
         ))}

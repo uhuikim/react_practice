@@ -32,10 +32,14 @@ const PaitentInfo = ({ data }) => {
 
       {state && (
         <tr>
-          <td colSpan={7}>
-            <div>
-              <p>{personData?.conditionList?.reduce((arr, cur) => arr + cur)}</p>
-              <p>{personData?.visitCount}</p>
+          <td className="listDetail" colSpan={7}>
+            <div className="listDetail__box">
+              <p>conditionList</p>
+              <p>{personData?.conditionList?.reduce((arr, cur) => arr + ' ' + cur)}</p>
+            </div>
+            <div className="listDetail__box">
+              <p>visitCount</p>
+              <p> {personData?.visitCount}</p>
             </div>
           </td>
         </tr>
