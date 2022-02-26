@@ -1,7 +1,8 @@
 import React from 'react';
 
-import '../styles/components/Filter.scss';
 import FilterDropDown from './FilterDropDown';
+
+import '../styles/components/Filter.scss';
 
 const Filter = ({ handleFilter, handleMinMaxFilter, handleResetButton, graphList, filter, ageFilter }) => {
   return (

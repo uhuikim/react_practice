@@ -1,54 +1,55 @@
 import React, { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
 
-const PieGraph = ({ props }) => {
-  const ref = useRef(null);
-
-  const createPie = d3
-    .pie()
-    .value((d) => d.value)
-    .sort(null);
-  const createArc = d3.arc().innerRadius(props.innerRadius).outerRadius(props.outerRadius);
-  const colors = d3.scaleOrdinal(d3.schemeCategory10);
-  const format = d3.format('.2f');
+const PieGraph = ({ data, title }) => {
+  const pieChart = useRef();
 
   useEffect(() => {
-    const data = createPie(props.data);
-    const group = d3.select(ref.current);
-    const groupWithData = group.selectAll('g.arc').data(data);
+    const pieData = d3.pie().value((d) => d.count)(data);
 
-    groupWithData.exit().remove();
+    const arc = d3.arc().innerRadius(0).outerRadius(200);
+    const colors = d3.scaleOrdinal(['#ffa822', '#134e6f', '#ff6150', '#1ac0c6', '#dee0e6']);
 
-    const groupWithUpdate = groupWithData.enter().append('g').attr('class', 'arc');
+    const svg = d3
+      .select(pieChart.current)
+      .attr('width', 600)
+      .attr('height', 600)
+      .style('background-color', 'yellow')
+      .append('g')
+      .attr('transform', 'translate(300,300)');
 
-    const path = groupWithUpdate.append('path').merge(groupWithData.select('path.arc'));
+    const tooldiv = d3
+      .select('#chart')
+      .append('div')
+      .style('visibility', 'hidden')
+      .style('position', 'absolute')
+      .style('background-color', 'red');
 
-    path
-      .attr('class', 'arc')
-      .attr('d', createArc)
-      .attr('fill', (d, i) => colors(i));
-
-    const text = groupWithUpdate.append('text').merge(groupWithData.select('text'));
-
-    text
-      .attr('text-anchor', 'middle')
-      .attr('alignment-baseline', 'middle')
-      .attr('transform', (d) => `translate(${createArc.centroid(d)})`)
-      .style('fill', 'white')
-      .style('font-size', 10)
-      .text((d) => format(d.value));
-  }, [props.data]);
+    svg
+      .append('g')
+      .selectAll('path')
+      .data(pieData)
+      .join('path')
+      .attr('d', arc)
+      .attr('fill', (d, i) => colors(i))
+      .attr('stroke', 'white')
+      .on('mouseover', (i, d) => {
+        tooldiv.style('visibility', 'visible').text(`${d.data.item} ${d.data.count}`);
+      })
+      .on('mousemove', (e) => {
+        tooldiv.style('top', e.pageY - 50 + 'px').style('left', e.pageX - 50 + 'px');
+      })
+      .on('mouseout', () => {
+        tooldiv.style('visibility', 'hidden');
+      });
+  }, []);
 
   return (
     <>
-      <h2> Line Chart </h2>
-      <div
-        ref={ref}
-        style={{
-          width: '100%',
-          height: 500,
-        }}
-      />
+      <h2> {title} </h2>
+      <div id="chart">
+        <svg ref={pieChart} />
+      </div>
     </>
   );
 };

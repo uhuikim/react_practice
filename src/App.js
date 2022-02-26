@@ -1,25 +1,22 @@
 import { useCallback, useEffect, useState } from 'react';
-import { getPatientList, getRaceList, getEthnicityList, getGenderList } from './apis';
+import { getPatientList, getRaceList, getEthnicityList, getGenderList, getGraphData } from './apis';
 import Filter from './components/Filter';
 import InputRow from './components/InputRow';
 import Pagination from './components/Pagination';
 import Table from './components/Table';
+import Graph from './components/Graph';
 import './styles/App.scss';
 
 function App() {
   const [patientData, setPatientData] = useState('');
-  // const [graphData, setGraphData] = useState('');
+  const [graphData, setGraphData] = useState('');
   const [inputRow, setInputRow] = useState(15);
   const [currentPage, setCurrentPage] = useState(1);
   const [sort, setSort] = useState({
     name: 'person_id',
     desc: true,
   });
-  // const [graphList, setGraphList] = useState({
-  //   rece: [],
-  //   ethnicity: [],
-  //   gender: [],
-  // });
+
   const [graphList, setGraphList] = useState([]);
 
   const [filter, setFilter] = useState({
@@ -43,14 +40,14 @@ function App() {
     }
   };
 
-  // const getGraphDatas = async () => {
-  //   try {
-  //     const data = await getGraphData();
-  //     setGraphData(data?.data?.stats);
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // };
+  const getGraphDatas = async () => {
+    try {
+      const data = await getGraphData();
+      setGraphData(data?.data?.stats);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const getGraphList = async () => {
     try {
@@ -66,7 +63,6 @@ function App() {
         { gender: GenderList?.data?.genderList },
         { death: ['true', 'false'] },
       ]);
-      console.log(raceList, EthnicityList, GenderList);
     } catch (err) {
       console.log(err);
     }
@@ -151,16 +147,15 @@ function App() {
   }, [currentPage, inputRow, sort, filter, ageFilter]);
 
   useEffect(() => {
-    // getGraphDatas();
+    getGraphDatas();
     getGraphList();
   }, []);
-
-  console.log(filter);
 
   return (
     <div className="app">
       <h1>환자 정보</h1>
       <InputRow inputValue={inputRow} handleInput={handleInputRow} />
+      <Graph data={graphData} graphList={graphList} />
       <Filter
         handleFilter={handleFilter}
         handleMinMaxFilter={handleMinMaxFilter}
