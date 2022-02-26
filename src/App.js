@@ -141,8 +141,8 @@ function App() {
       race: filter.race,
       death: filter.death,
       ethnicity: filter.ethnicity,
-      age_min: ageFilter.min,
-      age_max: ageFilter.max,
+      age_min: ageFilter.min ? +ageFilter.min : null,
+      age_max: ageFilter.max ? +ageFilter.max : null,
     });
   }, [currentPage, inputRow, sort, filter, ageFilter]);
 
@@ -153,24 +153,29 @@ function App() {
 
   return (
     <div className="app">
-      <h1>환자 정보</h1>
-      <InputRow inputValue={inputRow} handleInput={handleInputRow} />
-      <Graph data={graphData} graphList={graphList} />
-      <Filter
-        handleFilter={handleFilter}
-        handleMinMaxFilter={handleMinMaxFilter}
-        graphList={graphList}
-        filter={filter}
-        ageFilter={ageFilter}
-        handleResetButton={handleResetButton}
-      />
-      <Table data={patientData?.list} handleSort={handleSort} />
-      <Pagination
-        totalPageCount={Math.ceil(patientData?.totalLength / inputRow)}
-        countList={inputRow}
-        handlePageClick={handlePageClick}
-        currentPage={currentPage}
-      />
+      <div className="content">
+        <h1>환자 정보</h1>
+        <Graph data={graphData} graphList={graphList} />
+        <Filter
+          handleFilter={handleFilter}
+          handleMinMaxFilter={handleMinMaxFilter}
+          graphList={graphList}
+          filter={filter}
+          ageFilter={ageFilter}
+          handleResetButton={handleResetButton}
+        />
+        <div className="bread">
+          <InputRow inputValue={inputRow} handleInput={handleInputRow} />
+        </div>
+
+        <Table data={patientData?.list} handleSort={handleSort} />
+        <Pagination
+          totalPageCount={Math.ceil(patientData?.totalLength / inputRow)}
+          countList={inputRow}
+          handlePageClick={handlePageClick}
+          currentPage={currentPage}
+        />
+      </div>
     </div>
   );
 }

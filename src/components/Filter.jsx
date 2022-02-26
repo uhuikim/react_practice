@@ -20,10 +20,13 @@ const Filter = ({ handleFilter, handleMinMaxFilter, handleResetButton, graphList
       })}
       <div className="FilterBox">
         <p className="FilterTitle">age</p>
-        min
-        <input type="number" value={ageFilter.min || ''} onChange={handleMinMaxFilter('min')} />
-        max
-        <input type="number" value={ageFilter.max || ''} onChange={handleMinMaxFilter('max')} />
+        <label className="AgeFilter">
+          min <input type="number" value={ageFilter.min || ''} onChange={handleMinMaxFilter('min')} />
+        </label>
+
+        <label className="AgeFilter">
+          max <input type="number" value={ageFilter.max || ''} onChange={handleMinMaxFilter('max')} />
+        </label>
       </div>
 
       <div className="ButtonGroup">

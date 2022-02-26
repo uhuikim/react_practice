@@ -2,10 +2,9 @@
 
 .FilterWrap {
   background: white;
-  padding: 2rem;
+  padding: 1.5rem;
   border: 1px solid #bbb;
-  min-height: 100px;
-  min-width: 1000px;
+  width: 1200px;
 }
 
 .FilterBox {
@@ -19,17 +18,16 @@
   width: 220px;
   color: #5d5d5d;
   background: #d4d4d4;
-  text-align: center;
   font-weight: bold;
   padding: 0.8rem;
   flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .Filter {
-  display: flex;
-  padding: 0.8rem;
-  flex-shrink: 0;
-  min-width: 600px;
+  padding: 0.5rem;
 }
 
 .Input {
@@ -46,20 +44,15 @@
   margin-top: 1.5rem;
 }
 
-.SearchButton {
-  padding: 1rem 2rem;
-  background: red;
+.ResetButton {
+  padding: 0.8rem 1.5rem;
+  background: gray;
   color: white;
   display: block;
 
   &:hover {
     background: #40a7c4;
   }
-}
-
-.ResetButton {
-  @extend .SearchButton;
-  margin-left: 1rem;
 }
 
 .DropWrap {
@@ -71,18 +64,17 @@
   align-items: center;
   position: relative;
   width: 16rem;
-
   color: $gray2;
+  border: 1px solid $gray0;
+  padding: 0.6rem 1.5rem;
+  background: white;
+  margin-right: 2rem;
+
   > svg {
     transform: scale(0.5);
     position: absolute;
     right: 0.5rem;
   }
-  border: 1px solid $gray0;
-  padding: 0.6rem 1.5rem;
-  background: white;
-  height: 2.8rem;
-  margin-right: 2rem;
 }
 
 .DropMenu {
@@ -100,14 +92,27 @@
 .show {
   display: block;
 }
+
 .DropList {
   width: 100%;
   cursor: pointer;
-  :hover {
-    background: $light0;
-  }
-  height: 3.2rem;
+  height: 2.5rem;
   padding: 0 2rem;
   display: flex;
   align-items: center;
+  &:hover {
+    background: $gray0;
+  }
+}
+
+.AgeFilter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 1rem;
+  > input {
+    border: 1px solid $gray1;
+    margin-left: 0.5rem;
+    padding: 0.35rem 1rem;
+  }
 }
