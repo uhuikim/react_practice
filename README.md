@@ -4,6 +4,7 @@ npm start or yarn start
 
 # 구현 내용
 <img width="1423" alt="image" src="https://user-images.githubusercontent.com/53680212/155843352-4dd963dd-433b-41e7-82a0-49fa24836b47.png">
+<img width="990" alt="image" src="https://user-images.githubusercontent.com/53680212/155843465-d2100614-3dfb-4feb-a308-2b29081dd592.png">
 
 
 - 페이지네이션
