@@ -1,6 +1,63 @@
+import { useState, useEffect, useRef } from "react";
 import "./style/main.css";
 
 function App() {
+    const [scrollY, setScrollY] = useState(0);
+    const sectionRef = useRef([]);
+
+    const test = () => {
+        setScrollY(window.pageYOffset);
+    };
+    // useEffect(() => {
+    //     window.addEventListener("scroll", test);
+
+    //     return () => {
+    //         window.removeEventListener("scroll", test);
+    //     };
+    // }, []);
+
+    useEffect(() => {
+        const sceneInfo = [
+            {
+                type: "sticky",
+                heightNum: 5,
+                scrollHeight: 0,
+                objs: {
+                    container: sectionRef.current[0],
+                },
+            },
+            {
+                type: "normal",
+                heightNum: 5,
+                scrollHeight: 0,
+                objs: {
+                    container: sectionRef.current[1],
+                },
+            },
+            {
+                type: "sticky",
+                heightNum: 5,
+                scrollHeight: 0,
+                objs: {
+                    container: sectionRef.current[2],
+                },
+            },
+            {
+                type: "sticky",
+                heightNum: 5,
+                scrollHeight: 0,
+                objs: {
+                    container: sectionRef.current[3],
+                },
+            },
+        ];
+        if (sectionRef.current.length === 4)
+            sceneInfo.forEach((scene) => {
+                scene.scrollHeight = scene.heightNum * window.innerHeight;
+                scene.objs.container.style.height = `${scene.scrollHeight}px`;
+            });
+    }, []);
+
     return (
         <div className="container">
             <nav className="global-nav">
@@ -29,7 +86,7 @@ function App() {
                     <a href="/">구입하기</a>
                 </div>
             </nav>
-            <section className="scroll-section" id="scroll-section-0">
+            <section className="scroll-section" id="scroll-section-0" ref={(el) => (sectionRef.current[0] = el)}>
                 <h1>AirMug Pro</h1>
                 <div className="sticky-elem main-message">
                     <p>
@@ -57,7 +114,7 @@ function App() {
                     </p>
                 </div>
             </section>
-            <section className="scroll-section" id="scroll-section-1">
+            <section className="scroll-section" id="scroll-section-1" ref={(el) => (sectionRef.current[1] = el)}>
                 <p className="description">
                     <strong>보통 스크롤 영역</strong>
                     Lorem ipsum dolor, sit amet consectetur adipisicing elit. Id, tempore mollitia magnam delectus facilis, iure atque laudantium a labore recusandae vero perspiciatis quibusdam sequi,
@@ -71,7 +128,7 @@ function App() {
                     magni! Nostrum laudantium quod aut velit unde officiis laborum.
                 </p>
             </section>
-            <section className="scroll-section" id="scroll-section-2">
+            <section className="scroll-section" id="scroll-section-2" ref={(el) => (sectionRef.current[2] = el)}>
                 <div className="sticky-elem main-message">
                     <p>
                         <small>편안한 촉감</small>
@@ -94,7 +151,7 @@ function App() {
                     <div className="pin"></div>
                 </div>
             </section>
-            <section className="scroll-section" id="scroll-section-3">
+            <section className="scroll-section" id="scroll-section-3" ref={(el) => (sectionRef.current[3] = el)}>
                 <p className="mid-message">
                     <strong>Retina 머그</strong>
                     <br />
