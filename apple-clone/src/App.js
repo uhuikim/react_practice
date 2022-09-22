@@ -1,61 +1,69 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
+import "./style/global.css";
 import "./style/main.css";
 
+const sceneInfo = [
+    {
+        type: "sticky",
+        heightNum: 5,
+        scrollHeight: 0,
+    },
+    {
+        type: "normal",
+        heightNum: 5,
+        scrollHeight: 0,
+    },
+    {
+        type: "sticky",
+        heightNum: 5,
+        scrollHeight: 0,
+    },
+    {
+        type: "sticky",
+        heightNum: 5,
+        scrollHeight: 0,
+    },
+];
+
 function App() {
-    const [scrollY, setScrollY] = useState(0);
+    const [yOffset, setYOffset] = useState(0);
+
+    const currentScene = useRef(0);
     const sectionRef = useRef([]);
 
-    const test = () => {
-        setScrollY(window.pageYOffset);
-    };
-    // useEffect(() => {
-    //     window.addEventListener("scroll", test);
+    const scrollLoop = useCallback(() => {
+        let prevScrollHeight = [...sceneInfo].splice(0, currentScene.current).reduce((acc, cur) => {
+            return acc + cur.scrollHeight;
+        }, 0);
 
-    //     return () => {
-    //         window.removeEventListener("scroll", test);
-    //     };
-    // }, []);
+        if (yOffset > prevScrollHeight + sceneInfo[currentScene.current]?.scrollHeight) {
+            currentScene.current += 1;
+        }
+        if (yOffset < prevScrollHeight) {
+            currentScene.current -= 1;
+        }
+        // document.body.setAttribute("id", `show-scene-${currentScene}`);
+    }, [yOffset, currentScene]);
 
     useEffect(() => {
-        const sceneInfo = [
-            {
-                type: "sticky",
-                heightNum: 5,
-                scrollHeight: 0,
-                objs: {
-                    container: sectionRef.current[0],
-                },
-            },
-            {
-                type: "normal",
-                heightNum: 5,
-                scrollHeight: 0,
-                objs: {
-                    container: sectionRef.current[1],
-                },
-            },
-            {
-                type: "sticky",
-                heightNum: 5,
-                scrollHeight: 0,
-                objs: {
-                    container: sectionRef.current[2],
-                },
-            },
-            {
-                type: "sticky",
-                heightNum: 5,
-                scrollHeight: 0,
-                objs: {
-                    container: sectionRef.current[3],
-                },
-            },
-        ];
-        if (sectionRef.current.length === 4)
-            sceneInfo.forEach((scene) => {
-                scene.scrollHeight = scene.heightNum * window.innerHeight;
-                scene.objs.container.style.height = `${scene.scrollHeight}px`;
+        window.addEventListener("scroll", () => {
+            setYOffset(window.pageYOffset);
+            scrollLoop();
+        });
+
+        return () =>
+            window.removeEventListener("scroll", () => {
+                setYOffset(window.pageYOffset);
+                scrollLoop();
             });
+    }, [scrollLoop]);
+
+    useEffect(() => {
+        // layout 설정
+        sceneInfo.forEach((scene, i) => {
+            scene.scrollHeight = scene.heightNum * window.innerHeight;
+            sectionRef.current[i].style.height = `${scene.scrollHeight}px`;
+        });
     }, []);
 
     return (

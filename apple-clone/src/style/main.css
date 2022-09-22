@@ -21,6 +21,10 @@ a {
 }
 
 .global-nav {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
     height: 44px;
     padding: 0 1rem;
 }
@@ -63,6 +67,7 @@ a {
 
 .scroll-section {
     padding-top: 50vh;
+    border: 4px solid red;
 }
 
 #scroll-section-0 h1 {
