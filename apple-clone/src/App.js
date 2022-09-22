@@ -38,11 +38,12 @@ function App() {
 
         if (yOffset > prevScrollHeight + sceneInfo[currentScene.current]?.scrollHeight) {
             currentScene.current += 1;
+            document.body.setAttribute("id", `show-scene-${currentScene.current}`);
         }
         if (yOffset < prevScrollHeight) {
             currentScene.current -= 1;
+            document.body.setAttribute("id", `show-scene-${currentScene.current}`);
         }
-        // document.body.setAttribute("id", `show-scene-${currentScene}`);
     }, [yOffset, currentScene]);
 
     useEffect(() => {
@@ -64,6 +65,18 @@ function App() {
             scene.scrollHeight = scene.heightNum * window.innerHeight;
             sectionRef.current[i].style.height = `${scene.scrollHeight}px`;
         });
+
+        // 새로고침시 currentScene 체크
+        let totalScrollHeight = 0;
+
+        for (let i = 0; i < sceneInfo.length; i++) {
+            totalScrollHeight += sceneInfo[i].scrollHeight;
+            if (totalScrollHeight >= window.pageYOffset) {
+                currentScene.current = i;
+                break;
+            }
+        }
+        document.body.setAttribute("id", `show-scene-${currentScene.current}`);
     }, []);
 
     return (
